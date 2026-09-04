@@ -1,6 +1,6 @@
-# Shreeharsha M Hegde · Portfolio
+# MANOJ MAHABLESHWAR HEGDE · Portfolio
 
-Personal site for a data engineer, styled as a Databricks notebook. Vite + React 19 + TypeScript + Tailwind v4.
+Personal portfolio for Manoj Mahableshwar Hegde, Software Developer. Styled as an interactive developer notebook. Vite + React 19 + TypeScript + Tailwind v4.
 
 ## Run
 
@@ -22,12 +22,12 @@ For a custom domain or a `<user>.github.io` repo the base path resolves to `/` a
 ## Editing content
 
 All copy, links, stats, skills, projects and certifications live in `src/content/profile.ts`. Components only render it.
-The resume PDF is `public/Shreeharsha_Data_Engineer_Resume.pdf`; replace the file to update it (keep the name, or change it in `profile.ts`).
+The resume PDF is `public/Manoj_Mahableshwar_Hegde_Resume.pdf`; replace the file to update it (keep the name, or change it in `profile.ts`).
 
 ## How it is built
 
 - `src/notebook/`: the notebook metaphor: `ThemeProvider` (dark/light, persisted), `NotebookProvider` (cell execution counter, run all, vacuum, toasts, confetti), `Cell` (gutter + code + output, executes on scroll into view).
-- `src/widgets/`: pure canvas simulations (medallion flow, Spark job, ADF pipeline, Delta log, Power BI refresh, API token bucket, background mesh). No React, no DOM.
+- `src/widgets/`: pure canvas simulations (layered pipeline, task workers, scheduled jobs, transaction log, metrics stream, API gateway, background mesh). No React, no DOM.
 - `src/hooks/useCanvasWidget.ts`: runs a widget: DPR-aware sizing, ticks only while on screen, one shared `requestAnimationFrame` loop for the whole page (`src/lib/animationLoop.ts`).
 - `src/content/profile.ts`: the only place content lives. Section ids, titles and rail labels are defined once there; cells derive their index from that list.
 - `src/lib/motion.ts`: every timing the choreography depends on (cell run time, run-all stagger, theme switch, boot). CSS reads the stagger values through custom properties it publishes.
