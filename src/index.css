@@ -1,0 +1,273 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource/dm-mono/latin-400.css';
+@import '@fontsource/dm-mono/latin-500.css';
+
+/* Tailwind tokens. Colors point at the runtime theme variables below so
+   `bg-nb-bg`, `text-nb-mut` etc. follow the active theme automatically. */
+@theme inline {
+  --font-sans: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --color-nb-bg: var(--nb-bg);
+  --color-nb-surf: var(--nb-surf);
+  --color-nb-out: var(--nb-out);
+  --color-nb-line: var(--nb-line);
+  --color-nb-line-2: var(--nb-line-2);
+  --color-nb-txt: var(--nb-txt);
+  --color-nb-mut: var(--nb-mut);
+  --color-nb-dim: var(--nb-dim);
+  --color-nb-ember: var(--nb-ember);
+  --color-nb-amber: var(--nb-amber);
+  --color-nb-teal: var(--nb-teal);
+  --color-nb-ok: var(--nb-ok);
+  --color-nb-err: var(--nb-err);
+  --color-nb-bronze: var(--nb-bronze);
+  --color-nb-silver: var(--nb-silver);
+  --color-nb-gold: var(--nb-gold);
+  /* Ink on filled accent buttons. Same in both themes on purpose. */
+  --color-nb-ink: #0b0908;
+
+  --breakpoint-cluster: 56.25rem; /* 900px  - cluster label appears */
+  --breakpoint-nav: 67.5rem;      /* 1080px - top bar section links appear */
+  --breakpoint-rail: 73.75rem;    /* 1180px - DAG rail appears */
+}
+
+/* Runtime theme. `data-theme` is set on <html> before first paint by the
+   inline script in index.html, then kept in sync by ThemeProvider. */
+:root {
+  /* Fixed chrome geometry. Everything that clears the bars derives from these. */
+  --chrome-top: 52px;
+  --chrome-bottom: 30px;
+  --rail-w: 190px;
+
+  color-scheme: dark;
+  --nb-bg: #0b0908;
+  --nb-surf: #120f0d;
+  --nb-out: #0e0c0a;
+  --nb-line: rgba(255, 255, 255, 0.085);
+  --nb-line-2: rgba(255, 255, 255, 0.16);
+  --nb-txt: #efe9e4;
+  --nb-mut: rgba(239, 233, 228, 0.6);
+  --nb-dim: rgba(239, 233, 228, 0.34);
+  --nb-ember: #ff5a2c;
+  --nb-amber: #f5b342;
+  --nb-teal: #2fd3b5;
+  --nb-ok: #3ad38f;
+  --nb-err: #ff6b6b;
+  --nb-bronze: #cd7f32;
+  --nb-silver: #b8bcc6;
+  --nb-gold: #ffc94a;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --nb-bg: #f5f0e8;
+  --nb-surf: #fbf8f2;
+  --nb-out: #efe8dd;
+  --nb-line: rgba(28, 20, 16, 0.12);
+  --nb-line-2: rgba(28, 20, 16, 0.26);
+  --nb-txt: #1c1410;
+  --nb-mut: rgba(28, 20, 16, 0.64);
+  --nb-dim: rgba(28, 20, 16, 0.42);
+  --nb-ember: #d5431a;
+  --nb-amber: #a8720c;
+  --nb-teal: #0d8c76;
+  --nb-ok: #128a5c;
+  --nb-err: #c8372f;
+  --nb-bronze: #9c5a1c;
+  --nb-silver: #6e737d;
+  --nb-gold: #b8860b;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--chrome-top) + 24px);
+    background: var(--nb-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    background: var(--nb-bg);
+    color: var(--nb-txt);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    transition: background-color 0.5s;
+  }
+  h1, h2, h3, h4 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  em {
+    font-style: normal;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+  a {
+    color: var(--nb-teal);
+  }
+  a:hover {
+    color: var(--nb-ember);
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--nb-ember) 30%, transparent);
+  }
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: var(--nb-bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(128, 128, 128, 0.25); border-radius: 999px; }
+  :focus-visible {
+    outline: 2px solid var(--nb-teal);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+@layer components {
+  /* Fixed chrome (top bar, status bar). Backdrop blur is expensive to
+     composite during scroll on low-end phones, so it only turns on from md up. */
+  .chrome-bar {
+    background: color-mix(in srgb, var(--nb-bg) 94%, transparent);
+  }
+  @media (min-width: 48rem) {
+    .chrome-bar {
+      background: color-mix(in srgb, var(--nb-bg) 82%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+  }
+
+  /* Notebook cell execution states. Driven by data-status on the <section>
+     and data-fx on <html> (theme switch / vacuum). See notebook/Cell.tsx. */
+  .cell-code {
+    /* Both ends must be inset() for the typewriter transition to interpolate. */
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 0.45s steps(28);
+  }
+  .cell-out {
+    transition:
+      opacity var(--cell-reveal, 550ms) cubic-bezier(0.16, 1, 0.3, 1),
+      transform var(--cell-reveal, 550ms) cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.25s;
+  }
+  [data-status='pending'] .cell-code {
+    clip-path: inset(0 100% 0 0);
+    transition: none;
+  }
+  [data-status='pending'] .cell-out {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  [data-fx='switching'] .cell-out {
+    opacity: 0.35;
+    transition-delay: calc(var(--cell-i, 0) * var(--switch-stagger, 40ms));
+  }
+  [data-fx='vacuum'] .cell-out {
+    opacity: 0.15;
+    transition-delay: calc(var(--cell-i, 0) * var(--vacuum-stagger, 60ms));
+  }
+  /* Blur filters on large outputs are costly to composite on low-end phones,
+     so the "re-executing" effect is opacity-only there. */
+  @media (min-width: 48rem) {
+    [data-fx='switching'] .cell-out {
+      filter: blur(3px);
+    }
+    [data-fx='vacuum'] .cell-out {
+      filter: grayscale(1) blur(2px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cell-code, .cell-out { transition: none; }
+    [data-status='pending'] .cell-code { clip-path: none; }
+    [data-status='pending'] .cell-out { opacity: 1; transform: none; }
+  }
+
+  /* Toast entrance/exit. Reduced motion keeps the fade and drops the slide. */
+  .toast {
+    animation: nb-toast var(--toast-ms, 2600ms) ease forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toast {
+      animation-name: nb-toast-fade;
+    }
+  }
+
+  /* Notebook result tables. Shared by describe(), skills and credentials. */
+  .nb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .nb-table th {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--nb-line);
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--nb-dim);
+  }
+  .nb-table td {
+    padding: 14px 16px;
+  }
+  .nb-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid var(--nb-line);
+  }
+  .nb-table tbody tr:hover td {
+    background: color-mix(in srgb, var(--nb-txt) 2.5%, transparent);
+  }
+  @media (max-width: 39.99rem) {
+    .nb-table th,
+    .nb-table td {
+      padding-inline: 12px;
+    }
+    /* Rows too wide for a phone stack their cells instead of squeezing them. */
+    .nb-table-stack thead {
+      display: none;
+    }
+    .nb-table-stack tbody tr {
+      display: block;
+      padding: 14px 12px;
+    }
+    .nb-table-stack tbody tr:not(:last-child) {
+      border-bottom: 1px solid var(--nb-line);
+    }
+    .nb-table-stack td {
+      display: block;
+      padding: 0;
+      border-bottom: 0 !important;
+    }
+    .nb-table-stack td + td {
+      margin-top: 10px;
+    }
+  }
+
+  /* Vignette over the background canvas so text stays readable. */
+  .bg-fade {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--nb-bg) 55%, transparent),
+      transparent 30%,
+      transparent 62%,
+      color-mix(in srgb, var(--nb-bg) 70%, transparent)
+    );
+  }
+}
+
+@keyframes nb-spin   { to { transform: rotate(360deg); } }
+@keyframes nb-blink  { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+@keyframes nb-boot   { 0%, 78% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes nb-fade   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nb-ink    { from { opacity: 0; filter: blur(10px); transform: translateY(18px); } to { opacity: 1; filter: blur(0); transform: none; } }
+@keyframes nb-packet { 0% { transform: translateY(0); opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { transform: translateY(100%); opacity: 0; } }
+@keyframes nb-toast  { 0% { opacity: 0; transform: translateY(14px); } 10% { opacity: 1; transform: none; } 88% { opacity: 1; } 100% { opacity: 0; transform: translateY(-6px); } }
+@keyframes nb-toast-fade { 0% { opacity: 0; } 10% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes nb-caret  { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes nb-scan   { from { transform: translateY(-100%); } to { transform: translateY(400%); } }
