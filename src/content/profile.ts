@@ -248,7 +248,7 @@ export const PROJECTS: ReadonlyArray<Project> = [
     title: 'PlacementPro AI',
     body: 'Developed an AI-powered placement preparation platform featuring resume analysis, coding practice, and mock interview modules. Implemented secure authentication, personalized dashboards, AI-driven skill extraction, responsive UI, progress tracking, and performance analytics.',
     tags: ['Java', 'Spring Boot', 'React', 'MySQL', 'JWT', 'REST API', 'Git'],
-    url: 'https://github.com/MANOJHEGDE77',
+    url: 'https://github.com/MANOJHEGDE77/placmentpro-ai',
   },
   {
     kicker: 'BACKEND APIS · CIVIC TECH',
@@ -257,7 +257,7 @@ export const PROJECTS: ReadonlyArray<Project> = [
     title: 'CivicConnect',
     body: 'Built secure backend APIs and complaint management modules to streamline communication between citizens and authorities. Features citizen registration, complaint tracking with image upload, real-time status updates, complaint filtering, and notifications.',
     tags: ['Java', 'Spring Boot', 'MySQL', 'JWT', 'REST API', 'Cloudinary', 'Maven'],
-    url: 'https://github.com/MANOJHEGDE77',
+    url: 'https://github.com/MANOJHEGDE77/CivicConnect',
   },
   {
     kicker: 'PRODUCTIVITY · PERSISTENCE',
@@ -266,7 +266,7 @@ export const PROJECTS: ReadonlyArray<Project> = [
     title: 'Smart-Task-Manager',
     body: 'Developed a task management application for creating, updating, and tracking daily tasks efficiently. Implemented secure user authentication, persistent data storage via JPA, task categorization, and status-tracking features to improve productivity.',
     tags: ['Java', 'Spring Boot', 'MySQL', 'JPA', 'REST API'],
-    url: 'https://github.com/MANOJHEGDE77',
+    url: 'https://github.com/MANOJHEGDE77/smart-task-manager',
   },
   {
     kicker: 'OFFLINE-FIRST · P2P MESH',
@@ -275,7 +275,7 @@ export const PROJECTS: ReadonlyArray<Project> = [
     title: 'Mesh Link',
     body: 'Developed an offline-first Android application enabling secure peer-to-peer communication over decentralized mesh networks. Implemented end-to-end AES-256-GCM encryption, reliable messaging, local trust management, modern Jetpack Compose UI, and data synchronization.',
     tags: ['Kotlin', 'Jetpack Compose', 'Room', 'SQLCipher', 'WorkManager', 'Dagger Hilt'],
-    url: 'https://github.com/MANOJHEGDE77',
+    url: 'https://github.com/MANOJHEGDE77/Mesh-Link',
   },
 ]
 
