@@ -69,7 +69,7 @@ export const PROFILE = {
   github: { handle: 'MANOJHEGDE77', url: 'https://github.com/MANOJHEGDE77' },
   resume: {
     fileName: 'Manoj_Mahableshwar_Hegde_Resume.pdf',
-    url: `${import.meta.env.BASE_URL}Manoj_Mahableshwar_Hegde_Resume.pdf`,
+    url: `${import.meta.env.BASE_URL}Manoj_Mahableshwar_Hegde_Resume.pdf?v=2`,
     sizeLabel: 'PDF',
   },
   availability: 'open to software developer opportunities',
